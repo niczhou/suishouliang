@@ -44,12 +44,21 @@ public class ScaleView extends View {
         int w=getWidth();
         int h=getHeight();
         initPaint();
-        Log.v("nic.print",direction);
-//        if(direction=="south") {
-            canvas.drawRect(0, 0, (float) w, (float) h, paint);
-//        }else  if(direction=="west"){
-            canvas.drawOval(new RectF(0, 0, (float) w, (float) h), paint);
+        Log.i("nic.print",direction);
+//        if(direction.equals("south")) {
+//            Log.i("nic.print","direction is south");
+//            canvas.drawRect(0, 0, (float) w, (float) h, paint);
+//        }else  if(direction.equals("west")){
+//            canvas.drawOval(new RectF(0, 0, (float) w, (float) h), paint);
 //        }
+        switch (direction){
+            case "south":
+                canvas.drawRect(0, 0, (float) w, (float) h, paint);
+                break;
+            case "west":
+                canvas.drawOval(new RectF(0, 0, (float) w, (float) h), paint);
+                break;
+        }
     }
 
     private void initPaint(){
