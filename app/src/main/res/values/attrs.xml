@@ -11,7 +11,12 @@
     </declare-styleable>
 
     <declare-styleable name="ScaleView">
-        <attr name="direction" format="string"/>
+        <attr name="direction" format="enum">
+            <enum name="south" value="0"/>
+            <enum name="west" value="1"/>
+            <enum name="north" value="2"/>
+            <enum name="east" value="3"/>
+        </attr>
     </declare-styleable>
 
 </resources>
