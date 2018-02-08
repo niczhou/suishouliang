@@ -82,14 +82,17 @@ public class ScaleView extends View {
         int x= (int) event.getX();
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                if(scroller!=null && !scroller.isFinished()){
+                if(scroller!=null && !scroller.isFinished()) {
                     scroller.abortAnimation();
+                }else{
+                    scroller=new Scroller(getContext());
                     LastX=x;
+                    Log.i("nic.print",Integer.toString(x));
                     return true;
                 }
             case MotionEvent.ACTION_MOVE:
                 int deltaX=LastX-x;
-                
+                return true;
         }
 
 
