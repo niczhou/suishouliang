@@ -19,10 +19,11 @@ import android.widget.Scroller;
  */
 
 public class ScaleView extends View {
+    private static String TAG = "nic.print" ;
     private Paint paint;
     private int direction;
     protected Scroller scroller;
-    private int LastX;
+    private int lastX;
 
     protected OnScrollListener onScrollListener;
 
@@ -55,8 +56,7 @@ public class ScaleView extends View {
             int w=getWidth();
             int h=getHeight();
             initPaint();
-            Log.i("nic.print",Integer.toString(direction));
-
+//            Log.i("nic.print",Integer.toString(direction));
             switch (direction){
                 case 0:
                     canvas.drawRect(0, 0, (float) w, (float) h, paint);
@@ -65,6 +65,14 @@ public class ScaleView extends View {
                 case 1:
                     canvas.drawRect(0, 0, (float) w, (float) h, paint);
                     canvas.drawLine((float)w,(float) h/2,(float)w/2,(float)h/2,paint);
+                    break;
+                case 2:
+                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
+                    canvas.drawLine((float)w/2,(float)h/2,(float)w/2,(float)h,paint);
+                    break;
+                case 3:
+                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
+                    canvas.drawLine(0,(float) h/2,(float)w/2,(float)h/2,paint);
                     break;
             }
         }
@@ -84,19 +92,38 @@ public class ScaleView extends View {
             case MotionEvent.ACTION_DOWN:
                 if(scroller!=null && !scroller.isFinished()) {
                     scroller.abortAnimation();
-                }else{
-                    scroller=new Scroller(getContext());
-                    LastX=x;
-                    Log.i("nic.print",Integer.toString(x));
-                    return true;
                 }
+                lastX = x;
+                return true;
+
             case MotionEvent.ACTION_MOVE:
-                int deltaX=LastX-x;
+                int deltaX=lastX-x;
+                smoothScrollBy(deltaX,0);
+                lastX =x;
+                postInvalidate();
                 return true;
         }
-
-
         return super.onTouchEvent(event);
+    }
+
+    public void computeScroll() {
+        super.computeScroll();
+        // 判断Scroller是否执行完毕
+        if (scroller.computeScrollOffset()) {
+            scrollTo(scroller.getCurrX(), scroller.getCurrY());
+            // 通过重绘来不断调用computeScroll
+            invalidate();
+        }
+    }
+
+    public void smoothScrollBy(int dx, int dy) {
+        scroller.startScroll(scroller.getFinalX(), scroller.getFinalY(), dx, dy);
+    }
+
+    public void smoothScrollTo(int fx, int fy) {
+        int dx = fx - scroller.getFinalX();
+        int dy = fy - scroller.getFinalY();
+        smoothScrollBy(dx, dy);
     }
 
     private interface OnScrollListener{
