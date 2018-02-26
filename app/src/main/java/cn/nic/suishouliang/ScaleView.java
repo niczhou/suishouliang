@@ -29,15 +29,26 @@ public class ScaleView extends View {
 
     public ScaleView(Context context) {
         super(context);
+        initView();
     }
 
     public ScaleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.ScaleView);
         direction=typedArray.getInt(R.styleable.ScaleView_direction,0);
-
         typedArray.recycle();
+        initView();
     }
+        private void initView(){
+            paint=new Paint();
+            paint.setAntiAlias(true);
+            paint.setDither(true);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(8);
+            paint.setColor(Color.parseColor("#fe5228"));
+
+            scroller=new Scroller(getContext());
+        }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -47,43 +58,36 @@ public class ScaleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawFrame(canvas);
-
-        scroller=new Scroller(getContext());
+        drawView(canvas);
     }
-
-        private void drawFrame(Canvas canvas){
+//Methods to draw scale
+        private void drawView(Canvas canvas){
             int w=getWidth();
             int h=getHeight();
-            initPaint();
-//            Log.i("nic.print",Integer.toString(direction));
-            switch (direction){
-                case 0:
-                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
-                    canvas.drawLine((float)w/2,0,(float)w/2,(float)h/2,paint);
-                    break;
-                case 1:
-                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
-                    canvas.drawLine((float)w,(float) h/2,(float)w/2,(float)h/2,paint);
-                    break;
-                case 2:
-                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
-                    canvas.drawLine((float)w/2,(float)h/2,(float)w/2,(float)h,paint);
-                    break;
-                case 3:
-                    canvas.drawRect(0, 0, (float) w, (float) h, paint);
-                    canvas.drawLine(0,(float) h/2,(float)w/2,(float)h/2,paint);
-                    break;
+            drawFrame(canvas,w,h);
+            drawMarks(canvas,w,h);
+        }
+            private void drawFrame(Canvas canvas,int width,int height){
+                //draw frame,need add bg
+                canvas.drawRect(0, 0, (float)width, (float) height, paint);
             }
-        }
-        private void initPaint(){
-            paint=new Paint();
-            paint.setAntiAlias(true);
-            paint.setDither(true);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(8);
-            paint.setColor(Color.parseColor("#fe5228"));
-        }
+
+            private void drawMarks(Canvas canvas,int width, int height){
+                switch (direction){
+                    case 0:
+                        canvas.drawLine((float)width/2,0,(float)width/2,(float)height/2,paint);
+                        break;
+                    case 1:
+                        canvas.drawLine((float)width,(float) height/2,(float)width/2,(float)height/2,paint);
+                        break;
+                    case 2:
+                        canvas.drawLine((float)width/2,(float)height/2,(float)width/2,(float)height,paint);
+                        break;
+                    case 3:
+                        canvas.drawLine(0,(float) height/2,(float)width/2,(float)height/2,paint);
+                        break;
+                }
+            }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -94,44 +98,45 @@ public class ScaleView extends View {
                     scroller.abortAnimation();
                 }
                 lastX = x;
+//                Log.v("nic.print","touch down "+Integer.toString(x));
                 return true;
-
             case MotionEvent.ACTION_MOVE:
                 int deltaX=lastX-x;
                 smoothScrollBy(deltaX,0);
                 lastX =x;
                 postInvalidate();
+//                Log.v("nic.print","touch move "+Integer.toString(deltaX));
                 return true;
         }
         return super.onTouchEvent(event);
     }
 
-    public void computeScroll() {
-        super.computeScroll();
-        // 判断Scroller是否执行完毕
-        if (scroller.computeScrollOffset()) {
-            scrollTo(scroller.getCurrX(), scroller.getCurrY());
-            // 通过重绘来不断调用computeScroll
-            invalidate();
+//Methods to handle scroll
+        @Override
+        public void computeScroll() {
+            super.computeScroll();
+            // 判断Scroller是否执行完毕
+            if (scroller.computeScrollOffset()) {
+                scrollTo(scroller.getCurrX(), scroller.getCurrY());
+                // 通过重绘来不断调用computeScroll
+                invalidate();
+            }
         }
-    }
 
-    public void smoothScrollBy(int dx, int dy) {
-        scroller.startScroll(scroller.getFinalX(), scroller.getFinalY(), dx, dy);
-    }
+        public void smoothScrollBy(int dx, int dy) {
+            scroller.startScroll(scroller.getFinalX(), scroller.getFinalY(), dx, dy);
+        }
 
-    public void smoothScrollTo(int fx, int fy) {
-        int dx = fx - scroller.getFinalX();
-        int dy = fy - scroller.getFinalY();
-        smoothScrollBy(dx, dy);
-    }
+        public void smoothScrollTo(int fx, int fy) {
+            int dx = fx - scroller.getFinalX();
+            int dy = fy - scroller.getFinalY();
+            smoothScrollBy(dx, dy);
+        }
 
     private interface OnScrollListener{
-            void onScroll(int scale);
-        }
-
-        public void setOnScrollListener(OnScrollListener onScrollListener) {
-            this.onScrollListener = onScrollListener;
-        }
-
+        void onScroll(int scale);
+    }
+    public void setOnScrollListener(OnScrollListener onScrollListener) {
+        this.onScrollListener = onScrollListener;
+    }
 }

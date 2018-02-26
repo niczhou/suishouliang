@@ -22,6 +22,7 @@
             android:textStyle="bold" />
 
         <cn.nic.suishouliang.ScaleView
+            android:id="@+id/sv_south"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             nic:direction="south"
