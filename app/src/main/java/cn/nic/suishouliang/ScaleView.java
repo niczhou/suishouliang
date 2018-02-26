@@ -87,6 +87,7 @@ public class ScaleView extends View {
                         canvas.drawLine(0,(float) height/2,(float)width/2,(float)height/2,paint);
                         break;
                 }
+                ///
             }
 
     @Override
