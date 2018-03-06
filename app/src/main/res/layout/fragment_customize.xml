@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_south"
         app:layout_constraintLeft_toRightOf="@+id/tv_west"
         android:orientation="vertical"
-        android:background="#af1"
+        android:background="#9b5273"
         >
         <TextView
             android:layout_width="match_parent"
@@ -77,10 +77,9 @@
             android:layout_height="wrap_content"
             android:text="本机重量423g"/>
         <Button
-            android:id="@+id/btn_full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="全屏测量"/>
+            android:text="自定义"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
