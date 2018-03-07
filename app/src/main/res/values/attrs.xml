@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScaleViewCompat">
+        <attr name="dir" format="enum">
+            <enum name="north" value="0"/>
+            <enum name="east" value="1"/>
+            <enum name="south" value="2"/>
+            <enum name="west" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScaleView">
+        <attr name="direction" format="enum">
+            <enum name="north" value="0"/>
+            <enum name="east" value="1"/>
+            <enum name="south" value="2"/>
+            <enum name="west" value="3"/>
+        </attr>
+        <attr name="markColor" format="color"/>
+        <attr name="longMark" format="integer"/>
+    </declare-styleable>
+</resources>
