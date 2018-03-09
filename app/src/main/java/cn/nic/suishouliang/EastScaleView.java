@@ -36,9 +36,6 @@ public class EastScaleView extends ScaleView {
         Paint p =paint;
         p.setColor(Color.BLUE);
         canvas.drawRect(0,0,width,height,p);
-//        canvas.save();
-//        canvas.rotate(90,width/2,height/2);
-//        canvas.drawRect(0,0,height,width,p);
         padding =(int)(height%mm2dp_y());
         startText=(int)(height/(3*10*mm2dp_y()));
         for(int y=0;y<height;y++){
@@ -46,7 +43,7 @@ public class EastScaleView extends ScaleView {
             if((y- padding)%(10*mm2dp_y())==0){    //draw long mark
                 canvas.drawLine(width-longMark, y, width,y,p);
                 paint.setTextSize(largeFont);
-                canvas.drawText(String.valueOf(i/10-startText),width-longMark-largeFont,y-mm2dp_x(), paint);
+                drawVerticalText(canvas,90,String.valueOf(i/10-startText),width-longMark-largeFont,y-mm2dp_x(), paint);
             }
             else if((y- padding)%(5*mm2dp_y())==0) {
                 canvas.drawLine(width-mediumMark, y, width,y, paint);

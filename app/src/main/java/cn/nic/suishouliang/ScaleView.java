@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -17,9 +18,9 @@ import android.widget.Scroller;
 
 public abstract class ScaleView extends View {
     protected static final String TAG = "nex.print";
+    protected int direction;
     protected int width;
     protected int height;
-    protected int direction;
     protected Paint paint;
     protected boolean isMovable = true;
     protected Scroller scroller;
@@ -62,28 +63,28 @@ public abstract class ScaleView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = 20;
-        int height = 10;
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int w = 0;
+        int h = 0;
         switch (direction){
             case 0:
             case 2:
-                width = 3*measureSize(widthMeasureSpec,480);
-                height = measureSize(heightMeasureSpec,120);
+                w = 3 * measureSize(widthMeasureSpec,480);
+                h = measureSize(heightMeasureSpec,120);
                 break;
             case 1:
             case 3:
-                width = measureSize(widthMeasureSpec,120);
-                height = 3 * measureSize(heightMeasureSpec,480);
+                w = measureSize(widthMeasureSpec,120);
+                h = 3 * measureSize(heightMeasureSpec,480);
                 break;
         }
-        setMeasuredDimension(width,height);
+        setMeasuredDimension(w,h);
     }
         //measure size
         private int measureSize(int measureSpec,int defaultSize){
             int mode = MeasureSpec.getMode(measureSpec);
             int size = MeasureSpec.getSize(measureSpec);
-            int measuredSize = 0;
+            int measuredSize = defaultSize;
             switch (mode){
                 case MeasureSpec.EXACTLY:
                     measuredSize = size;
@@ -100,9 +101,10 @@ public abstract class ScaleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         width = getWidth();
         height =getHeight();
+        super.onDraw(canvas);
+        Log.v(TAG,"w/h:"+width+"/"+height);
         drawView(canvas);
     }
         //drawView
@@ -179,6 +181,13 @@ public abstract class ScaleView extends View {
             // 通过重绘来不断调用computeScroll
             invalidate();
         }
+    }
+
+    protected void drawVerticalText(Canvas canvas,int angle,String string,float x,float y,Paint paint){
+        canvas.save();
+        canvas.rotate(angle,x,y);
+        canvas.drawText(string,x,y,paint);
+        canvas.restore();
     }
 
 //    protected interface OnScrollListener{
