@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private String TAG="nex.print";
     private List<Fragment> list;
     private ViewPager vp_main;
+    private Button btn_measure;
     private Button btn_fullscreen;
     private boolean isVisible=true;
-    private String TAG="nex.print";
     private final Handler mHideHandler=new Handler(); //handler to hide/show elements in ui
     private View docorView;
 
@@ -30,9 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
         //init ui
         private void initView(){
-            vp_main= (ViewPager) findViewById(R.id.vp_main);
-            btn_fullscreen= (Button) findViewById(R.id.btn_fullscreen);
             docorView = getWindow().getDecorView();
+            vp_main= (ViewPager) findViewById(R.id.vp_main);
+            btn_measure= (Button) findViewById(R.id.btn_measure);
+//            btn_fullscreen= (Button)getSupportFragmentManager().findFragmentById().findViewById(R.id.btn_measure);
 
             list=new ArrayList<>();
             list.add(new FragmentCustomize());
@@ -42,14 +44,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             vp_main.setAdapter(mAdapter);
             vp_main.setCurrentItem(1);
 
-            btn_fullscreen.setOnClickListener(this);
+            btn_measure.setOnClickListener(this);
         }
 
     //implement onclick events
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_fullscreen:
+            case R.id.btn_measure:
                 toggle();
                 break;
         }
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         //implement show
             private void show(){
-                Log.v(TAG,"show:");
+//                Log.v(TAG,"show:");
                 docorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
             }

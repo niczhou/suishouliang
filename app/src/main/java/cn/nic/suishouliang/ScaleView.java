@@ -22,7 +22,6 @@ public abstract class ScaleView extends View {
     protected int width;
     protected int height;
     protected Paint paint;
-    protected boolean isMovable = true;
     protected Scroller scroller;
     protected float x_dpi=403.411f;
     protected float y_dpi=403.041f;
@@ -33,6 +32,8 @@ public abstract class ScaleView extends View {
     private int lastX;
     private int lastY;
     private int markColor;
+    protected boolean isLeftOnly = false;
+    protected boolean isRightOnly =true;
 
 //    protected OnScrollListener onScrollListener;
 
@@ -46,8 +47,6 @@ public abstract class ScaleView extends View {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs,R.styleable.ScaleView);
 //        direction = typedArray.getInt(R.styleable.ScaleView_orientation,0);
         markColor = typedArray.getColor(R.styleable.ScaleView_direction,Color.BLUE);
-
-
         typedArray.recycle();
         initView();
     }
@@ -63,48 +62,60 @@ public abstract class ScaleView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int w = 0;
-        int h = 0;
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int w=120;
+        int h=120;
         switch (direction){
             case 0:
             case 2:
-                w = 3 * measureSize(widthMeasureSpec,480);
+                w = 4* measureSize(widthMeasureSpec,800);
                 h = measureSize(heightMeasureSpec,120);
                 break;
             case 1:
             case 3:
                 w = measureSize(widthMeasureSpec,120);
-                h = 3 * measureSize(heightMeasureSpec,480);
+                h = 4*measureSize(heightMeasureSpec,800);
                 break;
         }
+//        Log.v(TAG, w+"-w/h-"+h);
         setMeasuredDimension(w,h);
     }
         //measure size
         private int measureSize(int measureSpec,int defaultSize){
             int mode = MeasureSpec.getMode(measureSpec);
             int size = MeasureSpec.getSize(measureSpec);
-            int measuredSize = defaultSize;
+            int mSize = defaultSize;
             switch (mode){
                 case MeasureSpec.EXACTLY:
-                    measuredSize = size;
+                    mSize = size;
                     break;
                 case MeasureSpec.AT_MOST:
-                    measuredSize = defaultSize;
+                    mSize = defaultSize;
                     break;
                 case MeasureSpec.UNSPECIFIED:
-                    measuredSize = defaultSize;
+                    mSize = defaultSize;
                     break;
             }
-            return measuredSize;
+            return mSize;
         }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        width = getWidth();
-        height =getHeight();
+        switch (direction) {
+            case 0:
+            case 2:
+                width = 4 * getWidth();
+                height = getHeight();
+                break;
+            case 1:
+            case 3:
+                width = getWidth();
+                height = 4 * getHeight();
+                break;
+        }
+//        width = getWidth();
+//        height = getHeight();
         super.onDraw(canvas);
-        Log.v(TAG,"w/h:"+width+"/"+height);
         drawView(canvas);
     }
         //drawView
@@ -116,7 +127,6 @@ public abstract class ScaleView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        return super.onTouchEvent(event);
-        if(isMovable == true){
             switch (direction) {
                 case 0:
                 case 2:
@@ -159,14 +169,13 @@ public abstract class ScaleView extends View {
                     }
                     break;
             }
-        }
         return  super.onTouchEvent(event);
     }
         //smooth move by
-        private void smoothScrollBy(int dx,int dy){
+        protected void smoothScrollBy(int dx,int dy){
             scroller.startScroll(scroller.getFinalX(),scroller.getFinalY(),dx,dy);
         }
-        private void smoothScrollTo(int fx,int fy){
+        protected void smoothScrollTo(int fx,int fy){
             int dx = fx - scroller.getFinalX();
             int dy = fy - scroller.getFinalY();
             smoothScrollBy(dx,dy);
@@ -183,7 +192,7 @@ public abstract class ScaleView extends View {
         }
     }
 
-    protected void drawVerticalText(Canvas canvas,int angle,String string,float x,float y,Paint paint){
+    protected void drawVerticalText(String string,float x,float y,int angle,Paint paint,Canvas canvas){
         canvas.save();
         canvas.rotate(angle,x,y);
         canvas.drawText(string,x,y,paint);
