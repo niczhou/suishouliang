@@ -77,10 +77,15 @@
             android:layout_height="wrap_content"
             android:text="本机重量423g"/>
         <Button
-            android:id="@+id/btn_full"
+            android:id="@+id/btn_fullscreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="全屏测量"/>
+        <Button
+            android:id="@+id/btn_redraw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="调整重绘"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

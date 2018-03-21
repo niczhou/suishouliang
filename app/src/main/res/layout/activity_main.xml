@@ -90,6 +90,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:layout_editor_absoluteX="0dp">
             <Button
+                android:id="@+id/btn_set"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="本机信息"
@@ -103,6 +104,7 @@
                 android:layout_weight="1"
                 />
             <Button
+                android:id="@+id/btn_convert"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="单位换算"

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/fragment_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -62,24 +62,26 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_south"
         app:layout_constraintLeft_toRightOf="@+id/tv_west"
         android:orientation="vertical"
-        android:background="#9b5273"
+        android:background="#af1"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="本机机型"/>
+            android:textSize="32sp"
+            android:text="单位换算"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="本机尺寸423g"/>
+            android:text="1 Kg = 665.6 pang"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="本机重量423g"/>
+            android:text="1 inch = 24.3 cm"/>
         <Button
+            android:id="@+id/btn_full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="自定义"/>
+            android:text="全屏测量"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
