@@ -14,7 +14,7 @@ import android.widget.Button;
  * Created by nic on 2018/3/6.
  */
 
-public class FragmentMeasure extends Fragment implements View.OnClickListener {
+public class Fragment_measure extends Fragment implements View.OnClickListener {
     private String TAG="nex.print";
     private LocalBroadcastManager localBroadcastManager;
     private Intent intent;
@@ -49,13 +49,12 @@ public class FragmentMeasure extends Fragment implements View.OnClickListener {
         if(bundle == null){
             bundle = new Bundle();
         }
+        intent.setAction("nex_suishouliang");
         switch (v.getId()){
             case R.id.btn_fullscreen:
-                intent.setAction("nex_fragment_measure");
                 bundle.putString("measure","fullscreen");
                 break;
             case R.id.btn_redraw:
-                intent.setAction("nex_fragment_measure");
                 bundle.putString("measure","redraw");
                 break;
         }

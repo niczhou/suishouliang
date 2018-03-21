@@ -14,7 +14,7 @@ import android.widget.Button;
  * Created by nic on 2018/3/6.
  */
 
-public class FragmentSet extends Fragment implements View.OnClickListener{
+public class Fragment_Set extends Fragment implements View.OnClickListener{
     private LocalBroadcastManager localBroadcastManager;
     private Intent intent;
     private Bundle bundle;
@@ -39,7 +39,7 @@ public class FragmentSet extends Fragment implements View.OnClickListener{
         if(bundle == null){
             bundle = new Bundle();
         }
-        intent.setAction("nex_fragment_set");
+        intent.setAction("nex_suishouliang");
         switch (v.getId()){
             case R.id.btn_fix:
                 bundle.putString("set","fix");

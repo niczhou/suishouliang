@@ -14,24 +14,30 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private String TAG="nex.print";
+    private boolean isDecorVisible =true;
+    private final Handler mHideHandler=new Handler(); //handler to hide/show elements in ui
+    private LocalBroadcastManager localBroadcastManager;
+    private BroadcastReceiver broadcastReceiver;
+    private Bundle bundle;
+    private String strLog = "随手量";
+
+    private View docorView;
     private List<Fragment> list_fragment;
     private List<Button> list_button;
     private ViewPager vp_main;
     private Button btn_measure;
     private Button btn_set;
     private Button btn_convert;
-    private boolean isVisible=true;
-    private final Handler mHideHandler=new Handler(); //handler to hide/show elements in ui
-    private View docorView;
-    private LocalBroadcastManager localBroadcastManager;
-    private BroadcastReceiver broadcastReceiver;
-    private Bundle bundle;
+    private TextView tv_title;
+    private ScaleView sv_north;
+    private ScaleView sv_east;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +52,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btn_measure= (Button) findViewById(R.id.btn_measure);
             btn_set = (Button) findViewById(R.id.btn_set);
             btn_convert = (Button) findViewById(R.id.btn_convert);
-//            btn_fullscreen= (Button)getSupportFragmentManager().findFragmentById().findViewById(R.id.btn_measure);
+            tv_title = (TextView) findViewById(R.id.tv_title);
+            sv_north = (ScaleView) findViewById(R.id.sv_north);
+            sv_east = (ScaleView) findViewById(R.id.sv_east);
 
             list_button =new ArrayList<>();
             list_button.add(btn_set);
             list_button.add(btn_measure);
             list_button.add(btn_convert);
             list_fragment =new ArrayList<>();
-            list_fragment.add(new FragmentSet());
-            list_fragment.add(new FragmentMeasure());
-            list_fragment.add(new FragmentConvert());
+            list_fragment.add(new Fragment_Set());
+            list_fragment.add(new Fragment_measure());
+            list_fragment.add(new Fragment_convert());
 
             MainFragmentPagerAdapter mAdapter=new MainFragmentPagerAdapter(getSupportFragmentManager(), list_fragment);
             vp_main.setAdapter(mAdapter);
@@ -78,8 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("nex_fragment_measure");
-        intentFilter.addAction("nex_fragment_set");
+        intentFilter.addAction("nex_suishouliang");
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -87,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(bundle != null && bundle.containsKey("measure")){
                     switch (bundle.getString("measure")){
                         case "fullscreen":
-                            Log.v(TAG,"toggle");
+                            log("toggle");
                             toggle();
                             break;
                         case "redraw":
@@ -96,15 +103,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                     }
                 }
-                if(bundle != null && bundle.containsKey("measure")){
-                    switch (bundle.getString("measure")){
-                        case "fullscreen":
-                            Log.v(TAG,"toggle");
-                            toggle();
+                if(bundle != null && bundle.containsKey("set")){
+                    switch (bundle.getString("set")){
+                        case "fix":
+                            log("fix");
+                            if(sv_north.isMovable()){
+                                sv_north.setMovable(false);
+                            }else {
+                                sv_north.setMovable(true);
+                            }
+                            if(sv_east.isMovable()){
+                                sv_east.setMovable(false);
+                            }else {
+                                sv_east.setMovable(true);
+                            }
                             break;
                         case "redraw":
-                            Log.v(TAG,"redraw");
-//                            toggle();
+//                            log("redraw");
                             break;
                     }
                 }
@@ -130,14 +145,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
         //implements toggole
         private void toggle(){
-            if(isVisible){
+            if(isDecorVisible){
                 hide();
-                isVisible=false;
+                isDecorVisible =false;
             }else {
                 show();
-                isVisible=true;
+                isDecorVisible =true;
             }
-//            Log.v(TAG,"isvisible: "+isVisible);
+//            Log.v(TAG,"isvisible: "+isDecorVisible);
         }
             //implements hide
             private void hide(){
@@ -173,4 +188,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        hide();
                     }
                 };
+
+    public void log(String string2log){
+        strLog = string2log;
+        tv_title.setText(string2log);
+    }
 }

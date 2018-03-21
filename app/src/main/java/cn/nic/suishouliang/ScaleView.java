@@ -34,6 +34,7 @@ public abstract class ScaleView extends View {
     private int markColor;
     protected boolean isLeftOnly = false;
     protected boolean isRightOnly =true;
+    private boolean isMovable = true;
 
 //    protected OnScrollListener onScrollListener;
 
@@ -127,6 +128,7 @@ public abstract class ScaleView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        return super.onTouchEvent(event);
+        if(isMovable) {
             switch (direction) {
                 case 0:
                 case 2:
@@ -160,7 +162,7 @@ public abstract class ScaleView extends View {
                             return true;
                         case MotionEvent.ACTION_MOVE:
                             int deltaY = lastY - y;
-                            smoothScrollBy(0,deltaY); //smooth move
+                            smoothScrollBy(0, deltaY); //smooth move
                             lastY = y;
                             postInvalidate();
                             return true;
@@ -169,6 +171,7 @@ public abstract class ScaleView extends View {
                     }
                     break;
             }
+        }
         return  super.onTouchEvent(event);
     }
         //smooth move by
@@ -198,7 +201,10 @@ public abstract class ScaleView extends View {
         canvas.drawText(string,x,y,paint);
         canvas.restore();
     }
-
+    public void setMovable(boolean movable) {
+        isMovable = movable;
+    }
+    public boolean isMovable(){return isMovable;}
 //    protected interface OnScrollListener{
 //        void onScroll();
 //    }

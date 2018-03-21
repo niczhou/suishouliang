@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:text="全屏"
+        android:textSize="36sp"
+        android:background="#faae"/>
+    <Button
+        android:id="@+id/btn_fix"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:text="锁定"
+        android:textSize="36sp"
+        android:background="#faae"/>
+    <Button
+        android:id="@+id/btn_set"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="自定义"
+        android:textSize="36sp"
+        android:background="#faae"/>
+
+</LinearLayout>
