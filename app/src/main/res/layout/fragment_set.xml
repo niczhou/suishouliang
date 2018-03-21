@@ -81,11 +81,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="自定义"/>
-        <Button
-            android:id="@+id/btn_fix"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="锁定"/>
 
 
     </LinearLayout>

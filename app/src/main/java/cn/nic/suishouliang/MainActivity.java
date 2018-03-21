@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver broadcastReceiver;
     private Bundle bundle;
-    private String strLog = "随手量";
+    private String strLog = "Log";
 
     private View docorView;
     private List<Fragment> list_fragment;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btn_measure;
     private Button btn_set;
     private Button btn_convert;
-    private TextView tv_title;
+    private TextView tv_log;
     private ScaleView sv_north;
     private ScaleView sv_east;
 
@@ -52,16 +52,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btn_measure= (Button) findViewById(R.id.btn_measure);
             btn_set = (Button) findViewById(R.id.btn_set);
             btn_convert = (Button) findViewById(R.id.btn_convert);
-            tv_title = (TextView) findViewById(R.id.tv_title);
+            tv_log = (TextView) findViewById(R.id.tv_log);
             sv_north = (ScaleView) findViewById(R.id.sv_north);
             sv_east = (ScaleView) findViewById(R.id.sv_east);
 
             list_button =new ArrayList<>();
-            list_button.add(btn_set);
+//            list_button.add(btn_set);
             list_button.add(btn_measure);
             list_button.add(btn_convert);
             list_fragment =new ArrayList<>();
-            list_fragment.add(new Fragment_Set());
+//            list_fragment.add(new Fragment_Set());
             list_fragment.add(new Fragment_measure());
             list_fragment.add(new Fragment_convert());
 
@@ -91,22 +91,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onReceive(Context context, Intent intent) {
                 bundle = intent.getExtras();
-                if(bundle != null && bundle.containsKey("measure")){
-                    switch (bundle.getString("measure")){
+                if(bundle != null && bundle.containsKey("toolbar")){
+                    switch (bundle.getString("toolbar")){
                         case "fullscreen":
                             log("toggle");
                             toggle();
                             break;
-                        case "redraw":
-                            Log.v(TAG,"redraw");
-//                            toggle();
-                            break;
-                    }
-                }
-                if(bundle != null && bundle.containsKey("set")){
-                    switch (bundle.getString("set")){
                         case "fix":
-                            log("fix");
+                            Log.v(TAG,"fix");
                             if(sv_north.isMovable()){
                                 sv_north.setMovable(false);
                             }else {
@@ -118,8 +110,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 sv_east.setMovable(true);
                             }
                             break;
-                        case "redraw":
-//                            log("redraw");
+                    }
+                }
+                if(bundle != null && bundle.containsKey("set")){
+                    switch (bundle.getString("set")){
+                        case "fix":
                             break;
                     }
                 }
@@ -191,6 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void log(String string2log){
         strLog = string2log;
-        tv_title.setText(string2log);
+        tv_log.setText(string2log);
     }
 }
