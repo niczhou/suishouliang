@@ -28,6 +28,8 @@ public class ScaleView_North extends ScaleView {
     protected void initView() {
         super.initView();
         direction = 0;
+        margin = 4 * mm2dp_y();
+        padding = 0 * mm2dp_y();
     }
 
     @Override
@@ -63,10 +65,11 @@ public class ScaleView_North extends ScaleView {
                 canvas.drawLine(x, 0, x, tinyMark, paint);
             }
         }
-        if(isFirstScroll){
-            smoothScrollBy(width/2,0);
-            isFirstScroll=false;
+    }
+
+    @Override
+    protected void fitScroll(int margin, int padding) {
+            smoothScrollBy(margin+padding+width/2,0);
             invalidate();
-        }
     }
 }

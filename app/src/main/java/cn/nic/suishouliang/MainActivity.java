@@ -1,9 +1,12 @@
 package cn.nic.suishouliang;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -12,7 +15,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -96,9 +101,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case "fullscreen":
                             log("toggle");
                             toggle();
+                            int padding = getStatusbarHeight();
+                            log("statusheight:"+padding);
+//                            sv_east.fitScroll(sv_east.margin,padding);
                             break;
                         case "fix":
-                            log("isMovable:" + sv_north.isMovable());
                             if(sv_north.isMovable()){
                                 sv_north.setMovable(false);
                             }else {
@@ -109,12 +116,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }else {
                                 sv_east.setMovable(true);
                             }
+                            log("isMovable:" + sv_north.isMovable());
                             break;
                     }
                 }
-                if(bundle != null && bundle.containsKey("set")){
-                    switch (bundle.getString("set")){
-                        case "fix":
+                if(bundle != null && bundle.containsKey("measure")){
+                    switch (bundle.getString("measure")){
+                        case "redraw":
+                            log("redraw");
+                            break;
+                        case "reset":
+                            log("reset");
                             break;
                     }
                 }
@@ -122,6 +134,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         localBroadcastManager.registerReceiver(broadcastReceiver,intentFilter);
     }
+            private int getStatusbarHeight(){
+                Display rootDisplay = getWindow().getWindowManager().getDefaultDisplay();  // sys window
+                Rect appRect = new Rect();  // app window
+                Rect drawRect = new Rect(); //draw area;
+                getWindow().getDecorView().getWindowVisibleDisplayFrame(appRect);
+                getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(drawRect);
+
+                Point point = new Point();
+                rootDisplay.getSize(point);
+                int root_height = point.y;
+                int app_height = appRect.top;
+                int h = root_height - app_height;
+                return  h;
+            }
 
     @Override
     protected void onPause() {

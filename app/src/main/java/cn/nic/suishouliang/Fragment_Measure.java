@@ -20,6 +20,7 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
     private Intent intent;
     private Bundle bundle;
     private Button btn_redraw;
+    private Button btn_reset;
 
 
     @Nullable
@@ -31,6 +32,8 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         intent = new Intent();
         btn_redraw = (Button) view.findViewById(R.id.btn_redraw);
         btn_redraw.setOnClickListener(this);
+        btn_reset = (Button) view.findViewById(R.id.btn_reset);
+        btn_reset.setOnClickListener(this);
 
         return view;
     }
@@ -50,6 +53,9 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_redraw:
                 bundle.putString("measure","redraw");
+                break;
+            case R.id.btn_reset:
+                bundle.putString("measure","reset");
                 break;
         }
         intent.putExtras(bundle);

@@ -34,7 +34,10 @@ public abstract class ScaleView extends View {
     private int markColor;
     protected boolean isLeftOnly = false;
     protected boolean isRightOnly =true;
-    private boolean isMovable = true;
+    private boolean isMovable = false;
+    protected int margin = 46;
+    protected int padding = 16;
+    protected boolean isFirstScroll = true;
 
 //    protected OnScrollListener onScrollListener;
 
@@ -118,9 +121,14 @@ public abstract class ScaleView extends View {
 //        height = getHeight();
         super.onDraw(canvas);
         drawView(canvas);
+        if(isFirstScroll) {
+            fitScroll(margin, padding);
+            isFirstScroll = false;
+        }
     }
         //drawView
         protected abstract void drawView(Canvas canvas);
+        protected abstract void fitScroll(int margin, int padding);
         //mm2dp
         protected int mm2dp_x(){return (int) (x_dpi/25.4f+0.5f);}
         protected int mm2dp_y(){ return (int) (y_dpi/25.4f+0.5f);}

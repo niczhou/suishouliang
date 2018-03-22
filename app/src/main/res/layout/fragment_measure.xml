@@ -87,7 +87,7 @@
                 android:textSize="32sp"
                 android:text="本机信息"/>
               <Button
-                  android:id="@+id/btn_set"
+                  android:id="@+id/btn_reset"
                   android:layout_width="0dp"
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
