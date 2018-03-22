@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context="cn.nic.suishouliang.MainActivity"
     >
-    <cn.nic.suishouliang.ScaleView_north
+    <cn.nic.suishouliang.ScaleView_North
         android:id="@+id/sv_north"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <cn.nic.suishouliang.ScaleView_east
+    <cn.nic.suishouliang.ScaleView_East
         android:id="@+id/sv_east"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

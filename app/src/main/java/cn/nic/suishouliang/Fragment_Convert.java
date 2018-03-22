@@ -11,7 +11,7 @@ import android.view.ViewGroup;
  * Created by nic on 2018/3/21.
  */
 
-public class Fragment_convert extends Fragment {
+public class Fragment_Convert extends Fragment {
 
     @Nullable
     @Override

@@ -11,15 +11,15 @@ import android.util.AttributeSet;
  * Created by nic on 2018/3/7.
  */
 
-public class ScaleView_north extends ScaleView {
+public class ScaleView_North extends ScaleView {
     private boolean isFirstScroll = true;
 
-    public ScaleView_north(Context context) {
+    public ScaleView_North(Context context) {
         super(context);
         initView();
     }
 
-    public ScaleView_north(Context context, @Nullable AttributeSet attrs) {
+    public ScaleView_North(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initView();
     }

@@ -21,8 +21,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private String TAG="nex.print";
-    private boolean isDecorVisible =true;
-    private final Handler mHideHandler=new Handler(); //handler to hide/show elements in ui
+    private boolean isDecorVisible =  true;
+    private final Handler mHideHandler = new Handler(); //handler to hide/show elements in ui
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver broadcastReceiver;
     private Bundle bundle;
@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             list_button.add(btn_convert);
             list_fragment =new ArrayList<>();
 //            list_fragment.add(new Fragment_Set());
-            list_fragment.add(new Fragment_measure());
-            list_fragment.add(new Fragment_convert());
+            list_fragment.add(new Fragment_Measure());
+            list_fragment.add(new Fragment_Convert());
 
             MainFragmentPagerAdapter mAdapter=new MainFragmentPagerAdapter(getSupportFragmentManager(), list_fragment);
             vp_main.setAdapter(mAdapter);
-            vp_main.setCurrentItem(1);
+            vp_main.setCurrentItem(0);
 
             for(int i=0;i<list_button.size();i++){
                 list_button.get(i).setOnClickListener(new View.OnClickListener() {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             toggle();
                             break;
                         case "fix":
-                            Log.v(TAG,"fix");
+                            log("isMovable:" + sv_north.isMovable());
                             if(sv_north.isMovable()){
                                 sv_north.setMovable(false);
                             }else {
@@ -147,11 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 show();
                 isDecorVisible =true;
             }
-//            Log.v(TAG,"isvisible: "+isDecorVisible);
         }
             //implements hide
             private void hide(){
-//                Log.v(TAG,"hide:");
                 ActionBar actionBar = getSupportActionBar();
                 if(actionBar != null){
                     actionBar.hide();
