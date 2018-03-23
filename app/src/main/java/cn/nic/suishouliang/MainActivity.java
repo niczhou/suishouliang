@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             log("toggle");
                             toggle();
                             int padding = getStatusbarHeight();
-                            log("statusheight:"+padding);
+//                            log("statusheight:"+padding);
 //                            sv_east.fitScroll(sv_east.margin,padding);
                             break;
                         case "fix":
@@ -135,18 +135,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         localBroadcastManager.registerReceiver(broadcastReceiver,intentFilter);
     }
             private int getStatusbarHeight(){
-                Display rootDisplay = getWindow().getWindowManager().getDefaultDisplay();  // sys window
+                Display rootRect = getWindow().getWindowManager().getDefaultDisplay();  // sys window
                 Rect appRect = new Rect();  // app window
                 Rect drawRect = new Rect(); //draw area;
                 getWindow().getDecorView().getWindowVisibleDisplayFrame(appRect);
                 getWindow().findViewById(Window.ID_ANDROID_CONTENT).getDrawingRect(drawRect);
 
                 Point point = new Point();
-                rootDisplay.getSize(point);
+                rootRect.getSize(point);
                 int root_height = point.y;
-                int app_height = appRect.top;
-                int h = root_height - app_height;
-                return  h;
+                int app_top = appRect.top;
+//                int h = root_height - app_height;
+                log("root_height/app_top:"+ root_height+"/"+app_top);
+                return  app_top;
             }
 
     @Override
