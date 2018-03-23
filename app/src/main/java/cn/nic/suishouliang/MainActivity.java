@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -27,7 +28,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private String TAG="nex.print";
     private boolean isDecorVisible =  true;
-    private final Handler mHideHandler = new Handler(); //handler to hide/show elements in ui
+    private Handler handler; //handler to hide/show elements in ui
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver broadcastReceiver;
     private Bundle bundle;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_log;
     private ScaleView sv_north;
     private ScaleView sv_east;
+    private int sb_height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
             }
+            //TODO handle scaleview
+            handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    switch (msg.what){
+                        case 1:
+                            sv_east.refit(sv_east.margin,msg.arg1);
+                            sv_east.postInvalidate();
+                            break;
+                        case 2:
+                            sv_north.padding = sv_north.padding + 20;
+                            sv_north.refit(sv_north.margin,sv_north.padding);
+                            sv_north.postInvalidate();
+                            break;
+                    }
+                }
+            };
+
         }
 
     @Override
@@ -99,11 +120,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(bundle != null && bundle.containsKey("toolbar")){
                     switch (bundle.getString("toolbar")){
                         case "fullscreen":
-                            log("toggle");
                             toggle();
-                            int padding = getStatusbarHeight();
-//                            log("statusheight:"+padding);
-//                            sv_east.fitScroll(sv_east.margin,padding);
+                            sb_height = getStatusbarHeight();
+                            new Thread(){
+                                @Override
+                                public void run() {
+//                                    super.run();
+                                    Message message = new Message();
+                                    message.what =1;
+//                                    message.arg1 =sb_height;
+                                    message.arg1 =12;
+                                    handler.sendMessage(message);
+                                }
+                            }.start();
                             break;
                         case "fix":
                             if(sv_north.isMovable()){
@@ -124,6 +153,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     switch (bundle.getString("measure")){
                         case "redraw":
                             log("redraw");
+                            new Thread(){
+                                @Override
+                                public void run() {
+//                                    super.run();
+                                    Message message = new Message();
+                                    message.what =2;
+                                    handler.sendMessage(message);
+                                }
+                            }.start();
                             break;
                         case "reset":
                             log("reset");
@@ -182,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     actionBar.hide();
                 }
                 docorView.setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
-//                mHideHandler.removeCallbacks(mShowPart2Runnalble);
+//                handler.removeCallbacks(mShowPart2Runnalble);
 //                vp_main.setSystemUiVisibility(View.GONE);
             }
         //implement show

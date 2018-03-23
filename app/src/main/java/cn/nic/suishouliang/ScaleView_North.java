@@ -12,7 +12,6 @@ import android.util.AttributeSet;
  */
 
 public class ScaleView_North extends ScaleView {
-    private boolean isFirstScroll = true;
 
     public ScaleView_North(Context context) {
         super(context);
@@ -65,11 +64,5 @@ public class ScaleView_North extends ScaleView {
                 canvas.drawLine(x, 0, x, tinyMark, paint);
             }
         }
-    }
-
-    @Override
-    protected void fitScroll(int margin, int padding) {
-            smoothScrollBy(margin+padding+width/2,0);
-            invalidate();
     }
 }

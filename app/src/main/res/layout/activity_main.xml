@@ -38,6 +38,7 @@
         <fragment
             android:id="@+id/fragment_toolbar"
             android:name="cn.nic.suishouliang.Fragment_Toolbar"
+            tools:layout="@layout/fragment_toolbar"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:text="随手量"

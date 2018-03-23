@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -29,15 +28,15 @@ public abstract class ScaleView extends View {
     protected int longMark=56;
     protected int mediumMark=36;
     protected int tinyMark=24;
-    private int lastX;
-    private int lastY;
     private int markColor;
     protected boolean isLeftOnly = false;
     protected boolean isRightOnly =true;
     private boolean isMovable = false;
     protected int margin = 46;
     protected int padding = 16;
-    protected boolean isFirstScroll = true;
+    protected boolean isRefit = true;
+    private int lastX;
+    private int lastY ;
 
 //    protected OnScrollListener onScrollListener;
 
@@ -121,17 +120,31 @@ public abstract class ScaleView extends View {
 //        height = getHeight();
         super.onDraw(canvas);
         drawView(canvas);
-        if(isFirstScroll) {
-            fitScroll(margin, padding);
-            isFirstScroll = false;
+        if(isRefit) {
+            refit(margin, padding);
+            isRefit = false;
         }
     }
         //drawView
+        public void refit(int margin,int padding){
+            this.margin = margin;
+            this.padding = padding;
+            switch (direction){
+                case 0:
+                case 2:
+                    smoothScrollTo(this.margin+this.padding+this.width/2,0);
+                    break;
+                case 1:
+                case 3:
+                    smoothScrollTo(0,this.margin+this.padding+this.height/2);
+                    break;
+            }
+        };
         protected abstract void drawView(Canvas canvas);
-        protected abstract void fitScroll(int margin, int padding);
         //mm2dp
         protected int mm2dp_x(){return (int) (x_dpi/25.4f+0.5f);}
         protected int mm2dp_y(){ return (int) (y_dpi/25.4f+0.5f);}
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -143,9 +156,9 @@ public abstract class ScaleView extends View {
                     int x = (int) event.getX();
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            if (scroller != null && scroller.isFinished()) {
-                                scroller.abortAnimation();
-                            }
+//                            if (scroller != null && scroller.isFinished()) {
+//                                scroller.abortAnimation();
+//                            }
                             lastX = x;
                             return true;
                         case MotionEvent.ACTION_MOVE:
