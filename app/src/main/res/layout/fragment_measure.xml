@@ -63,7 +63,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="1"
-        android:weightSum="8"
+        android:weightSum="9"
         >
         <TextView
             android:layout_width="match_parent"
@@ -84,42 +84,49 @@
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textSize="17sp"
-            android:text="长x宽  ："/>
+            android:text="重量(g)  ："/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textSize="17sp"
-            android:text="上边距  ："/>
+            android:text="长x宽(mm)  ："/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textSize="17sp"
-            android:text="下边距 ："/>
+            android:text="上边距(mm)  ："/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textSize="17sp"
-            android:text="左边距  ："/>
+            android:text="下边距(g) ："/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewEnd"
             android:textSize="17sp"
-            android:text="右边距  ："/>
+            android:text="左边距(mm)  ："/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textAlignment="viewEnd"
+            android:textSize="17sp"
+            android:text="右边距(mm)  ："/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:weightSum="8"
+        android:weightSum="9"
         >
         <Button
             android:id="@+id/btn_reset"
@@ -129,48 +136,86 @@
             android:layout_gravity="left"
             android:text="自定义" />
 
-        <TextView
+        <EditText
+            android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="机型  ："/>
-        <TextView
+            android:enabled="false"
+            android:textColor="#fe5"
+            android:text="小米3"/>
+        <EditText
+            android:id="@+id/et_weight"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="长x宽  ："/>
+            android:enabled="false"
+            android:textColor="#fe5"
+            android:text="668"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:textAlignment="viewStart"
+            android:weightSum="5"
+            >
+        <EditText
+            android:id="@+id/et_height"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:textSize="17sp"
+            android:text="1018"/>
         <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=" * "/>
+        <EditText
+            android:id="@+id/et_width"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+                android:layout_weight="2"
+            android:textSize="17sp"
+            android:text="860"/>
+        </LinearLayout>
+        <EditText
+            android:id="@+id/et_mnorth"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="上边距  ："/>
-        <TextView
+            android:text="25"/>
+        <EditText
+            android:id="@+id/et_msouth"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="下边距 ："/>
-        <TextView
+            android:text="36"/>
+        <EditText
+            android:id="@+id/et_mwest"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="左边距  ："/>
-        <TextView
+            android:text="5"/>
+        <EditText
+            android:id="@+id/et_meast"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textAlignment="viewStart"
             android:textSize="17sp"
-            android:text="右边距  ："/>
+            android:text="6"/>
         <Button
             android:id="@+id/btn_redraw"
             android:layout_width="match_parent"
