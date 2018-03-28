@@ -21,13 +21,14 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnSystemUiVisibilityChangeListener{
     private String TAG="nex.print";
     private boolean isDecorVisible =  true;
     private Handler handler; //handler to hide/show elements in ui
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv_log = (TextView) findViewById(R.id.tv_log);
             sv_north = (ScaleView) findViewById(R.id.sv_north);
             sv_east = (ScaleView) findViewById(R.id.sv_east);
+            sv_east.setOnSystemUiVisibilityChangeListener(this);
 
             list_button =new ArrayList<>();
 //            list_button.add(btn_set);
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             MainFragmentPagerAdapter mAdapter=new MainFragmentPagerAdapter(getSupportFragmentManager(), list_fragment);
             vp_main.setAdapter(mAdapter);
             vp_main.setCurrentItem(0);
-
+            spref = getSharedPreferences("suishouliang",MODE_PRIVATE);
             for(int i=0;i<list_button.size();i++){
                 list_button.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
             }
-            spref = getSharedPreferences("suishouliang",MODE_PRIVATE);
             //TODO handle scaleview
             handler = new Handler(){
                 @Override
@@ -96,16 +97,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     super.handleMessage(msg);
                     switch (msg.what){
                         case 1: //full screen
-                            String strPhone = Build.MODEL;
-                            int marginNorth = Integer.parseInt(spref.getString("north_margin","12"));
-                            sv_east.refit(marginNorth,0);
-                            sv_east.postInvalidate();
+//                            String strPhone = Build.MODEL;
+//                            int marginNorth = Integer.parseInt(spref.getString("north_margin","12"));
+//                            sv_east.refit(marginNorth,0);
+//                            sv_east.postInvalidate();
                             break;
                         case 2: //default redraw
                             String arr_name[] = {"phone","weight","width","height",
                                     "north_margin","south_margin","east_margin","west_margin"};
                             String strPhoneDef = Build.MODEL;
-                            spref = getSharedPreferences("suishouliang",MODE_PRIVATE);
                             int marginWestDef = Integer.parseInt(spref.getString(strPhoneDef+"_"+"west_margin","3"));
                             sv_north.refit(marginWestDef,0);
                             sv_north.postInvalidate();
@@ -161,15 +161,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                         case "fullscreen":
                             toggle();
-                            new Thread(){
-                                @Override
-                                public void run() {
-//                                    super.run();
-                                    Message message = Message.obtain();
-                                    message.what = 1;
-                                    handler.sendMessage(message);
-                                }
-                            }.start();
+//                            new Thread(){
+//                                @Override
+//                                public void run() {
+////                                    super.run();
+//                                    Message message = Message.obtain();
+//                                    message.what = 1;
+//                                    handler.sendMessage(message);
+//                                }
+//                            }.start();
                             break;
                     }
                 }
@@ -254,6 +254,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        hide();
                     }
                 };
+    @Override
+    public void onSystemUiVisibilityChange(int visibility) {
+        if(visibility ==View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|visibility==View.SYSTEM_UI_FLAG_FULLSCREEN){
+//            nxprint("full,m/p:"+marginNorth+"/"+paddingNorth);
+            nxprint("full");
+        }else {
+            String strPhone = Build.MODEL;
+            int marginNorth = Integer.parseInt(spref.getString("north_margin","12"));
+            int paddingNorth = getStatusBarHeight()/sv_east.mm2dp_y();
+            nxprint("not full,m/p:"+marginNorth+"/"+paddingNorth);
+            sv_east.refit(marginNorth,paddingNorth);
+            sv_east.postInvalidate();
+        }
+    }
 
     public void nxprint(String string2log){
         strLog = string2log;
