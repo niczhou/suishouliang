@@ -27,7 +27,7 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
     private LocalBroadcastManager localBroadcastManager;
     private Intent intent;
     private Bundle bundle;
-    private Button btn_sys;
+    private Button btn_default;
     private Button btn_reset;
     private EditText et_phone;
     private EditText et_weight;
@@ -50,8 +50,8 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         View  view=inflater.inflate(R.layout.fragment_measure,null);
         localBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
         intent = new Intent();
-        btn_sys = (Button) view.findViewById(R.id.btn_sys);
-        btn_sys.setOnClickListener(this);
+        btn_default = (Button) view.findViewById(R.id.btn_default);
+        btn_default.setOnClickListener(this);
         btn_reset = (Button) view.findViewById(R.id.btn_reset);
         btn_reset.setOnClickListener(this);
 
@@ -81,29 +81,31 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         spref = getActivity().getSharedPreferences("suishouliang",Context.MODE_PRIVATE);
         editor = spref.edit();
-        boolean isFirstRun = spref.getBoolean("isfirstrun",true);
+        boolean isFirstRun = spref.getBoolean("isfirstrun",false);
         if(isFirstRun){
             //write default system info to shared preferences
-            default_sysinfo();
-        }
+            putDefaultInfo();
 //        load_sysinfo();
-        show_info();
-    }
-        private void load_sysinfo(){
-            String str_phone = Build.MODEL;
-            Log.v(TAG,str_phone);
-            editor.putString("phone",str_phone);
-            editor.commit();
+            showDefaultInfo();
         }
-        private void default_sysinfo(){
-            String arr_name[] = {"phone","weight","width","height",
+    }
+        private void putDefaultInfo(){
+            String arrName[] = {"phone","weight","width","height",
                     "north_margin","south_margin","east_margin","west_margin"};
-            String arr_miv[]={"MI 3C","556","868","1086","32","45","8","10"};
-            String str_phone = Build.MODEL;
-            for(int i=0;i<arr_name.length;i++){
-                editor.putString(str_phone+arr_name[i],arr_miv[i]);
+            String arr_miv[]={"MI 3C","556","868","1086","20","21","8","8"};
+            String strPhone = Build.MODEL;
+            for(int i=0;i<arrName.length;i++){
+                editor.putString(strPhone+"_"+arrName[i],arr_miv[i]);
             }
             editor.commit();
+        }
+        private void showDefaultInfo(){
+            String arrName[] = {"phone","weight","width","height",
+                    "north_margin","south_margin","east_margin","west_margin"};
+            String strPhone = Build.MODEL;
+            for(int i=0;i<arrName.length;i++){
+                list_et.get(i).setText(spref.getString(strPhone+"_"+arrName[i],"null"));
+            }
         }
 
     @Override
@@ -113,9 +115,10 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         }
         intent.setAction("nex_suishouliang");
         switch (v.getId()){
-            case R.id.btn_sys:
-                bundle.putString("measure","redraw");
-                show_info();
+            case R.id.btn_default:
+                bundle.putString("measure","default");
+                showDefaultInfo();
+                putData();
                 break;
             case R.id.btn_reset:
                 bundle.putString("measure","reset");
@@ -125,16 +128,11 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         intent.putExtras(bundle);
         localBroadcastManager.sendBroadcast(intent);
     }
-        private void show_info(){
-                String str_phone = spref.getString("phone","未知机型");
-                Log.v(TAG,str_phone);
-                list_et.get(0).setText(str_phone);
-        }
         private void reset(){
             if(isEditable){
                 for (EditText et:list_et) {
                     et.setEnabled(false);
-                    push_data();
+                    putData();
                 }
                 btn_reset.setText("自定义");
                 isEditable = false;
@@ -146,7 +144,7 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
                 isEditable = true;
             }
         }
-        private void push_data(){
+        private void putData(){
             String arr_name[] = {"phone","weight","width","height",
                     "north_margin","south_margin","east_margin","west_margin"};
 //            editor.putString(arr_name[0],list_et.get(0).getText().toString());

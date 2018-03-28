@@ -27,8 +27,8 @@ public class ScaleView_East extends ScaleView {
     protected void initView() {
         super.initView();
         direction = 1;
-        margin  = 15 * mm2dp_x();
-        padding = 5 * mm2dp_x();
+//        margin  = 15 * mm2dp_x();
+//        padding = 5 * mm2dp_x();
     }
 
     @Override

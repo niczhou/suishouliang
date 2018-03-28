@@ -32,8 +32,8 @@ public abstract class ScaleView extends View {
     protected boolean isLeftOnly = false;
     protected boolean isRightOnly =true;
     private boolean isMovable = false;
-    protected int margin = 46;
-    protected int padding = 16;
+    protected int margin = 8;
+    protected int padding = 3;
     protected boolean isRefit = true;
     private int lastX;
     private int lastY ;
@@ -77,7 +77,7 @@ public abstract class ScaleView extends View {
             case 1:
             case 3:
                 w = measureSize(widthMeasureSpec,120);
-                h = 4*measureSize(heightMeasureSpec,800);
+                h = 4 * measureSize(heightMeasureSpec,800);
                 break;
         }
 //        Log.v(TAG, w+"-w/h-"+h);
@@ -132,11 +132,11 @@ public abstract class ScaleView extends View {
             switch (direction){
                 case 0:
                 case 2:
-                    smoothScrollTo(this.margin+this.padding+this.width/2,0);
+                    smoothScrollTo(this.margin*mm2dp_x()+this.padding*mm2dp_x()+this.width/2,0);
                     break;
                 case 1:
                 case 3:
-                    smoothScrollTo(0,this.margin+this.padding+this.height/2);
+                    smoothScrollTo(0,this.margin*mm2dp_y()+this.padding*mm2dp_y()+this.height/2);
                     break;
             }
         };
