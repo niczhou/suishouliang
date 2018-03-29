@@ -42,7 +42,7 @@ public class Fragment_Toolbar extends Fragment implements View.OnClickListener{
         if(bundle == null){
             bundle = new Bundle();
         }
-        intent.setAction("nex_suishouliang");
+        intent.setAction("suishouliang");
         switch (v.getId()){
             case R.id.btn_fullscreen:
                 bundle.putString("toolbar","fullscreen");

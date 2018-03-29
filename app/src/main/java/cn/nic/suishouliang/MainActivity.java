@@ -1,8 +1,6 @@
 package cn.nic.suishouliang;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,7 +19,6 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -53,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
+        initCreate();
     }
         //init ui
-        private void initView(){
+        private void initCreate(){
             docorView = getWindow().getDecorView();
             vp_main= (ViewPager) findViewById(R.id.vp_main);
             btn_measure= (Button) findViewById(R.id.btn_measure);
@@ -80,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             vp_main.setAdapter(mAdapter);
             vp_main.setCurrentItem(0);
             spref = getSharedPreferences("suishouliang",MODE_PRIVATE);
+            fitToSpref("",getStatusBarHeight());
             for(int i=0;i<list_button.size();i++){
                 list_button.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,23 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     super.handleMessage(msg);
                     switch (msg.what){
                         case 1: //full screen
-//                            String strPhone = Build.MODEL;
-//                            int marginNorth = Integer.parseInt(spref.getString("north_margin","12"));
-//                            sv_east.refit(marginNorth,0);
-//                            sv_east.postInvalidate();
+//                            fitToSpref("",0);
                             break;
                         case 2: //default redraw
-                            String arr_name[] = {"phone","weight","width","height",
-                                    "north_margin","south_margin","east_margin","west_margin"};
-                            String strPhoneDef = Build.MODEL;
-                            int marginWestDef = Integer.parseInt(spref.getString(strPhoneDef+"_"+"west_margin","3"));
-                            sv_north.refit(marginWestDef,0);
-                            sv_north.postInvalidate();
-                            int paddingNorthDef = getStatusBarHeight()/sv_east.mm2dp_y();
-                            nxprint("sbar:"+paddingNorthDef);
-                            int marginNorthDef = Integer.parseInt(spref.getString(strPhoneDef+"_"+"north_margin","12"));
-                            sv_east.refit(marginNorthDef,paddingNorthDef);
-                            sv_east.postInvalidate();
+                            String strDefault = Build.MODEL+"_";
+                            fitToSpref(strDefault,getStatusBarHeight());
                             break;
                     }
                 }
@@ -139,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("nex_suishouliang");
+        intentFilter.addAction("suishouliang");
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -161,15 +147,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                         case "fullscreen":
                             toggle();
-//                            new Thread(){
-//                                @Override
-//                                public void run() {
-////                                    super.run();
-//                                    Message message = Message.obtain();
-//                                    message.what = 1;
-//                                    handler.sendMessage(message);
-//                                }
-//                            }.start();
+                            new Thread(){
+                                @Override
+                                public void run() {
+//                                    super.run();
+                                    Message message = Message.obtain();
+                                    message.what = 1;
+                                    handler.sendMessage(message);
+                                }
+                            }.start();
                             break;
                     }
                 }
@@ -188,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                         case "reset":
                             nxprint("reset");
+                            fitToSpref("",getStatusBarHeight());
                             break;
                     }
                 }
@@ -258,19 +245,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onSystemUiVisibilityChange(int visibility) {
         if(visibility ==View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|visibility==View.SYSTEM_UI_FLAG_FULLSCREEN){
 //            nxprint("full,m/p:"+marginNorth+"/"+paddingNorth);
+            fitToSpref("",0);
             nxprint("full");
         }else {
-            String strPhone = Build.MODEL;
-            int marginNorth = Integer.parseInt(spref.getString("north_margin","12"));
-            int paddingNorth = getStatusBarHeight()/sv_east.mm2dp_y();
-            nxprint("not full,m/p:"+marginNorth+"/"+paddingNorth);
-            sv_east.refit(marginNorth,paddingNorth);
-            sv_east.postInvalidate();
+            fitToSpref("",getStatusBarHeight());
         }
     }
-
-    public void nxprint(String string2log){
-        strLog = string2log;
-        tv_log.setText(string2log);
+        private void fitToSpref(String prefix,int statusbarHeight){
+            String arrName[] = {"phone","weight","width","height",
+                    "north_margin","south_margin","east_margin","west_margin"};
+            int marginNorth = Integer.parseInt(spref.getString(prefix+"north_margin","12"));
+            int paddingNorth = statusbarHeight/sv_east.mm2dp_y();
+            sv_east.refit(marginNorth,paddingNorth);
+            sv_east.postInvalidate();
+            int marginWest = Integer.parseInt(spref.getString(prefix+"west_margin","12"));
+            sv_north.refit(marginWest,0);
+            sv_north.postInvalidate();
+        }
+    public void nxprint(String toLog){
+        this.strLog = toLog;
+        tv_log.setText(toLog);
     }
 }

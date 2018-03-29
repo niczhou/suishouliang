@@ -104,6 +104,7 @@ public abstract class ScaleView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         switch (direction) {
             case 0:
             case 2:
@@ -116,14 +117,11 @@ public abstract class ScaleView extends View {
                 height = 4 * getHeight();
                 break;
         }
-//        width = getWidth();
-//        height = getHeight();
-        super.onDraw(canvas);
         drawView(canvas);
-        if(isRefit) {
-            refit(margin, padding);
-            isRefit = false;
-        }
+//        if(isRefit) {
+//            refit(margin, padding);
+//            isRefit = false;
+//        }
     }
         //drawView
         public void refit(int margin,int padding){

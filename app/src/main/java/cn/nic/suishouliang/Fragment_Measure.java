@@ -92,10 +92,10 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         private void putDefaultInfo(){
             String arrName[] = {"phone","weight","width","height",
                     "north_margin","south_margin","east_margin","west_margin"};
-            String arr_miv[]={"MI 3C","556","868","1086","20","21","8","8"};
+            String arrDefault[]={"未知机型","556","868","1086","20","21","8","8"};
             String strPhone = Build.MODEL;
             for(int i=0;i<arrName.length;i++){
-                editor.putString(strPhone+"_"+arrName[i],arr_miv[i]);
+                editor.putString(strPhone+"_"+arrName[i],arrDefault[i]);
             }
             editor.commit();
         }
@@ -113,7 +113,7 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
         if(bundle == null){
             bundle = new Bundle();
         }
-        intent.setAction("nex_suishouliang");
+        intent.setAction("suishouliang");
         switch (v.getId()){
             case R.id.btn_default:
                 bundle.putString("measure","default");
@@ -145,12 +145,12 @@ public class Fragment_Measure extends Fragment implements View.OnClickListener {
             }
         }
         private void putData(){
-            String arr_name[] = {"phone","weight","width","height",
+            String arrName[] = {"phone","weight","width","height",
                     "north_margin","south_margin","east_margin","west_margin"};
 //            editor.putString(arr_name[0],list_et.get(0).getText().toString());
             for(int i=0;i<list_et.size();i++) {
                 Log.v(TAG,list_et.get(i).getText().toString());
-                editor.putString(arr_name[i],list_et.get(i).getText().toString());
+                editor.putString(arrName[i],list_et.get(i).getText().toString());
             };
             editor.commit();
         }
